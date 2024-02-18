@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LaTeX Editor</title>
+  <script async src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    #editor {
+      width: 80%;
+      height: 200px;
+    }
+
+    #output {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <textarea id="editor" placeholder="Enter your LaTeX code here..."></textarea>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    document.getElementById('editor').addEventListener('input', function () {
+      render();
+    });
+
+    function render() {
+      const editorContent = document.getElementById('editor').value;
+      const outputElement = document.getElementById('output');
+      
+      MathJax.texReset();
+      MathJax.typesetClear();
+      
+      MathJax.tex2chtmlPromise(editorContent, { display: true })
+        .then((node) => {
+          outputElement.innerHTML = '';
+          outputElement.appendChild(node);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  </script>
+</body>
+</html>
